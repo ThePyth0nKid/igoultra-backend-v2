@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # my apps
     'users',
     'xp',
+    'seasons',
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
