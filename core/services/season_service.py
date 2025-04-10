@@ -1,10 +1,6 @@
-# core/services/season_service.py
-
-import datetime
-from seasons.models import SeasonScore
 from core.utils.time import get_current_season
+from seasons.models import SeasonScore
 
-# Add seasonal XP
 def add_season_xp(user, amount, mode):
     season = get_current_season()
     score, _ = SeasonScore.objects.get_or_create(
