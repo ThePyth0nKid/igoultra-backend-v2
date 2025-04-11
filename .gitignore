@@ -1,0 +1,34 @@
+# 🐍 Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+
+# 🌐 Django
+db.sqlite3
+.env
+.env.*
+
+# 📦 Virtual Environment
+env/
+venv/
+.venv/
+
+# 💻 macOS & Windows
+.DS_Store
+Thumbs.db
+
+# 📁 VS Code
+.vscode/
+
+# 🔧 Heroku
+*.log
+*.pot
+*.pyc
+staticfiles/
+local_settings.py
+
+# 🚀 Build files
+*.egg-info/
+dist/
+build/
