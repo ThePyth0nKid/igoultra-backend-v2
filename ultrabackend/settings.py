@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    
+    'django_extensions',
 
     # Auth system
     'rest_framework',
@@ -56,7 +58,7 @@ INSTALLED_APPS = [
 # ----------------------------------------------------------------
 
 AUTH_USER_MODEL = 'users.CustomUser'
-SITE_ID = 1
+SITE_ID = 2
 
 # ----------------------------------------------------------------
 # 🔐 REST Framework & Auth Config

@@ -4,12 +4,13 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    # REST Auth URLs (Login, Logout, Password Reset, etc.)
+    # API Auth (Login, Logout, Token, etc.)
     path('api/auth/', include('dj_rest_auth.urls')),
-
-    # Registration (optional, falls du neue User anlegen willst)
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
 
-    # Social Login (Discord etc.)
+    # Social login API (falls du später eigene Views hast)
     path('api/auth/social/', include('allauth.socialaccount.urls')),
+
+    # ⚠️ Wichtig für den Discord-Redirect-Login über /accounts/...
+    path('accounts/', include('allauth.urls')),
 ]
