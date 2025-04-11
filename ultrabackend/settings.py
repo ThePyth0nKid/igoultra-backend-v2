@@ -19,8 +19,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # 🔐 Security Settings
 # ----------------------------------------------------------------
 
-import os
-
 try:
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
 except KeyError:
@@ -32,8 +30,8 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".herokuapp.com",
+    "igoultra-backend-v2-7307073ce46e.herokuapp.com"
 ]
-
 
 # ----------------------------------------------------------------
 # 🧩 Installed Apps
@@ -49,6 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
+    # Extra
+    'corsheaders',
     'django_extensions',
 
     # Auth system
@@ -113,8 +113,9 @@ SOCIALACCOUNT_PROVIDERS = {
 # ----------------------------------------------------------------
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Wichtig für Heroku
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -193,7 +194,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ----------------------------------------------------------------
@@ -201,3 +201,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # ----------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ----------------------------------------------------------------
+# 🔓 CORS CONFIGURATION
+# ----------------------------------------------------------------
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://igo-ultra-landing.vercel.app",  # optional für Deployment
+]
+
+CORS_ALLOW_CREDENTIALS = True
