@@ -21,12 +21,12 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
+    "api.igoultra.de",  # ✅ your production backend subdomain
     ".herokuapp.com",
-    "igoultra-backend-v2-7307073ce46e.herokuapp.com"
 ]
 
 # ------------------------------------------------------------
-# 🧩 Installed Applications
+# 📦 Installed Applications
 # ------------------------------------------------------------
 
 INSTALLED_APPS = [
@@ -38,32 +38,33 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    # Third-party
+    # Third-party apps
     'corsheaders',
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
+    'dj_rest_auth.registration',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.discord',
 
-    # Custom
+    # Custom apps
     'users',
     'xp',
     'seasons',
 ]
 
 # ------------------------------------------------------------
-# 🔐 User & Site Config
+# 👤 User Model and Site ID
 # ------------------------------------------------------------
 
 AUTH_USER_MODEL = 'users.CustomUser'
 SITE_ID = 2
 
 # ------------------------------------------------------------
-# 🔐 REST Framework & Auth
+# 🔑 REST Framework + Session Auth (No JWT)
 # ------------------------------------------------------------
 
 REST_FRAMEWORK = {
@@ -73,10 +74,8 @@ REST_FRAMEWORK = {
     ],
 }
 
-# ❌ JWT Deaktiviert – Nur Session Auth via Discord
-REST_USE_JWT = False
+REST_USE_JWT = False  # Sessions only
 
-# Optional JWT config (für später)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
@@ -89,7 +88,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_UNIQUE_EMAIL = True
 
 # ------------------------------------------------------------
-# 🔑 Discord OAuth2
+# 🔐 Discord OAuth2 Settings
 # ------------------------------------------------------------
 
 SOCIALACCOUNT_PROVIDERS = {
@@ -100,14 +99,14 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = "http://localhost:5173/discord/callback"
+LOGIN_REDIRECT_URL = "https://app.igoultra.de/discord/callback"  # ✅ your frontend
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
 SOCIALACCOUNT_ADAPTER = "allauth.socialaccount.adapter.DefaultSocialAccountAdapter"
 
 # ------------------------------------------------------------
-# 🔧 Middleware
+# 🧱 Middleware
 # ------------------------------------------------------------
 
 MIDDLEWARE = [
@@ -124,7 +123,7 @@ MIDDLEWARE = [
 ]
 
 # ------------------------------------------------------------
-# 📦 Templates
+# 🖼 Templates
 # ------------------------------------------------------------
 
 ROOT_URLCONF = 'ultrabackend.urls'
@@ -147,7 +146,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ultrabackend.wsgi.application'
 
 # ------------------------------------------------------------
-# 🗄️ Database
+# 💾 Database
 # ------------------------------------------------------------
 
 import dj_database_url
@@ -159,7 +158,7 @@ DATABASES = {
 }
 
 # ------------------------------------------------------------
-# ✅ Password Validators
+# 🔐 Password Validators
 # ------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -170,7 +169,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # ------------------------------------------------------------
-# 🌍 I18N
+# 🌐 Internationalization
 # ------------------------------------------------------------
 
 LANGUAGE_CODE = 'en-us'
@@ -179,7 +178,7 @@ USE_I18N = True
 USE_TZ = True
 
 # ------------------------------------------------------------
-# 🎨 Static Files (Heroku + WhiteNoise)
+# 🎨 Static Files (for Heroku deployment)
 # ------------------------------------------------------------
 
 STATIC_URL = '/static/'
@@ -189,28 +188,28 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------------------------------------------
-# 🌐 CORS Config
+# 🌐 CORS Configuration
 # ------------------------------------------------------------
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://igo-ultra-landing.vercel.app",
+    "https://app.igoultra.de",  # ✅ frontend domain for Vercel
 ]
 
 CORS_ALLOW_CREDENTIALS = True
 
 # ------------------------------------------------------------
-# 🍪 Secure Cookies (Cross-Origin Login)
+# 🍪 Secure Cookie Settings (for Cross-Origin Cookies)
 # ------------------------------------------------------------
 
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = "None"
+SESSION_COOKIE_SAMESITE = "None"  # Required for cross-site cookies
 
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 
 # ------------------------------------------------------------
-# 📧 Email Console Backend (Dev only)
+# 📧 Email Configuration (Dev only)
 # ------------------------------------------------------------
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
