@@ -16,7 +16,7 @@ Discord, wearables, and VR/AR.
 - 🌌 Reality & Cyber layer logic based on XP/level
 - 🧱 Clean Architecture using `core/services`, `constants`, `utils`
 - 📡 REST API powered by Django Rest Framework
-- 🔐 Auth system with JWT (`simplejwt`)
+- 🔐 Auth system using **session cookies** (CSRF-safe, frontend-ready)
 
 ---
 
@@ -24,7 +24,9 @@ Discord, wearables, and VR/AR.
 
 ```bash
 igo_ultra_backend_v2/
-├── ultrabackend/         # Django core settings
+├── ultrabackend/         # Django project (settings, urls)
+├── api/
+│   └── v1/               # Versioned API endpoints
 ├── users/                # CustomUser model (with discord_id)
 ├── xp/                   # Activities, XPEntry, UserProfile
 ├── seasons/              # SeasonScore, leaderboards
@@ -42,7 +44,7 @@ igo_ultra_backend_v2/
 
 - `CustomUser` with `discord_id`
 - Login via `django-allauth` + `dj-rest-auth`
-- Token-based using `simplejwt`
+- Secure session-based auth (CSRF support)
 - Discord bot sends XP via API
 
 ---
@@ -91,7 +93,8 @@ Logic via: `core/services/xp_service.py`
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/youruser/igo_ultra_backend_v2.git
+git clone https://github.com/ThePyth0nKid/igoultra-backend-v2.git
+cd igoultra-backend-v2
 
 # 2. Create virtual environment
 python -m venv venv
@@ -110,23 +113,33 @@ python manage.py runserver
 
 ---
 
-## 🧱 Conventions
+## 🌐 Deployment
 
-- Clean architecture: logic lives in `core/`
-- ESLint 501-style: max. 80 characters per line
-- English comments, even in DE-based code
-- DRY: no business logic in views – always use services
-- Modular & scalable for games, VR, AR
+- Backend domain: `https://api.igoultra.de`
+- Setup CORS + CSRF for frontend domain: `https://app.igoultra.de`
+- Use `Heroku PostgreSQL` addon
+- Add `.env` variables in Heroku Settings > Config Vars
+  - `DJANGO_SECRET_KEY`
+  - `DJANGO_DEBUG=False`
+  - `DATABASE_URL` (from addon)
+- Set `ALLOWED_HOSTS` in `settings.py` to include both domains
 
 ---
 
-## 🛠️ Roadmap
+## 📱 Mobile Compatibility
 
-- [ ] Test XP API with real data
-- [ ] Connect Discord bot to API
-- [ ] Integrate frontend
-- [ ] Auto-detect season changes
-- [ ] Make layer influence game mechanics
+- Backend works for both web and mobile apps
+- Use same API base (`api.igoultra.de`) in native apps
+- Future-proof with JWT fallback if needed
+
+---
+
+## 🧱 Conventions
+
+- Clean architecture: logic lives in `core/`
+- English comments
+- DRY: business logic in services
+- Versioned API: all under `/api/v1/`
 
 ---
 
@@ -136,147 +149,5 @@ python manage.py runserver
 > Real-world actions become the foundation for a digital universe  
 > where your progress is visible, tangible, and playable.  
 > XP, training, community. You vs. You.
-
-**AHHU.**
-
-
-# 🧠 iGoUltra Backend V2
-
-Das `igo_ultra_backend_v2` ist das zentrale Backend des iGoUltra-Universums.  
-Es verbindet **Real-Life Challenges** mit einem gamifizierten XP-System,  
-das Nutzer:innen über Level, Ränge, Saisons und Schichten (Layer) hinweg  
-begleitet. Ziel ist ein modulares, skalierbares Backend, das später mit  
-Discord, Wearables und VR/AR-Technologien interagieren kann.
-
----
-
-## 🚀 Features
-
-- 🎮 XP-System mit Levelkurve, Aktivitäten, Einträgen & Services
-- 🔗 Discord OAuth2 Login & Bot-Integration (XP via Discord)
-- 📆 Season-System mit saisonalen Leaderboards
-- 🌌 Reality & Cyber Layer Logik basierend auf XP/Level
-- 🧱 Clean Architecture mit `core/services`, `constants`, `utils`
-- 📡 REST API über Django Rest Framework
-- 🔐 Auth-System mit JWT (simplejwt)
-
----
-
-## 🧩 Projektstruktur
-
-```bash
-igo_ultra_backend_v2/
-├── ultrabackend/         # Django Core Projekt (settings, urls)
-├── users/                # CustomUser-Modell (inkl. Discord-ID)
-├── xp/                   # Aktivitäten, XPEntry, UserProfile
-├── seasons/              # SeasonScore, Leaderboards
-├── layers/               # RealityLayerStatus & CyberLayerStatus
-├── core/
-│   ├── services/         # XP-, Season-, Layer-Logik
-│   ├── constants/        # XP-Grenzen, Layer-Mappings
-│   └── utils/            # Zeit- und Hilfsfunktionen
-└── manage.py
-```
-
----
-
-## 🔐 Auth System
-
-- `CustomUser` mit `discord_id`
-- Login über `django-allauth` + `dj-rest-auth`
-- Token-basiert über `simplejwt`
-- Discord Bot vergibt XP via API
-
----
-
-## 🧠 XP-System Übersicht
-
-| Modell         | Zweck                              |
-|----------------|-------------------------------------|
-| `ActivityType` | Definierte Aktivitäten (z.B. Pushups) |
-| `XPEntry`      | Einzelne Aktion mit XP              |
-| `UserProfile`  | XP + Level pro Nutzer               |
-
-Logik über: `core/services/xp_service.py`
-
----
-
-## 📆 Seasons
-
-- `SeasonScore`: XP-Speicherung nach Monat & Modus
-- Zwei Modi: `Reality` & `Cyber`
-- Leaderboards über DRF-API
-
----
-
-## 🌌 Layer System
-
-- `RealityLayerStatus` & `CyberLayerStatus`
-- Layer wird aus XP/Level berechnet
-- Zugang zu Events & Dungeons
-
----
-
-## 🔗 Wichtige Endpoints
-
-| Endpoint                       | Beschreibung               |
-|-------------------------------|----------------------------|
-| `/api/auth/discord/`          | Discord OAuth Login        |
-| `/api/xp/add/`                | XP vergeben (Bot / Frontend)|
-| `/api/user/profile/`          | Aktuelles XP-Level anzeigen|
-| `/api/seasons/reality/`       | Reality Leaderboard        |
-| `/api/seasons/cyber/`         | Cyber Leaderboard          |
-
----
-
-## ✅ Setup
-
-```bash
-# 1. Repo klonen
-git clone https://github.com/deinuser/igo_ultra_backend_v2.git
-
-# 2. Virtuelle Umgebung starten
-python -m venv venv
-source venv/bin/activate  # oder venv\Scripts\activate
-
-# 3. Requirements installieren
-pip install -r requirements.txt
-
-# 4. Migrationen & Superuser anlegen
-python manage.py migrate
-python manage.py createsuperuser
-
-# 5. Dev Server starten
-python manage.py runserver
-```
-
----
-
-## 🧱 Konventionen
-
-- Clean Architecture: Logik in `core/`
-- ESLint 501-konformer Stil: max. 80 Zeichen pro Zeile
-- Englische Kommentare, auch im deutschen Code
-- DRY: Keine Business-Logik in Views, nur über Services
-- Modular & skalierbar für Games, VR, AR
-
----
-
-## 🛠️ Roadmap
-
-- [ ] XP-API mit echten Daten testen
-- [ ] Discord-Bot anbinden
-- [ ] Frontend integrieren
-- [ ] Saisonwechsel automatisch erkennen
-- [ ] Layer beeinflussen Spielmechanik
-
----
-
-## 💡 Vision
-
-> **iGoUltra** ist mehr als ein Projekt – es ist ein Movement.  
-> Reale Handlungen werden zur Basis für ein digitales Universum,  
-> in dem dein Fortschritt sichtbar, spürbar und spielbar wird.  
-> XP, Training, Community. You vs. You.
 
 **AHHU.**
