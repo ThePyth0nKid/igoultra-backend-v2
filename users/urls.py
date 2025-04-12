@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import DiscordLogin, CurrentUserView
+from .views import DiscordLogin, CurrentUserView, get_csrf_token
 from dj_rest_auth.views import LogoutView
 
 urlpatterns = [
@@ -12,4 +12,7 @@ urlpatterns = [
 
     # 🚪 Logout endpoint (works with session-based login like Discord OAuth)
     path("logout/", LogoutView.as_view(), name="rest_logout"),
+
+    # 🍪 CSRF Token endpoint (needed for POST requests like logout)
+    path("csrf/", get_csrf_token, name="get_csrf_token"),
 ]

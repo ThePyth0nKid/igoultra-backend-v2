@@ -6,22 +6,31 @@ from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
 
-# Import the custom user serializer (make sure it exists in users/serializers.py)
+# Import your custom user serializer
 from .serializers import UserSerializer
 
+
 # 🔐 Discord OAuth2 Login View
-# This class handles the OAuth2 login redirect flow via Discord
 class DiscordLogin(SocialLoginView):
     adapter_class = DiscordOAuth2Adapter
-    callback_url = "http://localhost:5173/discord/callback"  # Change this in production
+    callback_url = "http://localhost:5173/discord/callback"  # Update for production!
     client_class = OAuth2Client
 
-# 👤 Authenticated User Info View
-# Returns the currently logged-in user's data (used on frontend for profile, etc.)
+
+# 👤 Returns the current authenticated user info
 class CurrentUserView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
+
+
+# 🍪 Ensures a CSRF token is set in the cookie for session-based requests (needed for logout)
+@ensure_csrf_cookie
+def get_csrf_token(request):
+    return JsonResponse({"detail": "CSRF cookie set."})
