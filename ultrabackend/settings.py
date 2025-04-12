@@ -106,7 +106,7 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # Redirect after login/logout
-LOGIN_REDIRECT_URL = "https://igo-ultra-landing.vercel.app/dashboard"
+LOGIN_REDIRECT_URL = "http://localhost:5173/dashboard"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 # Optional: use default social adapter (can be replaced with custom one)
