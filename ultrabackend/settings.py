@@ -7,17 +7,18 @@ from pathlib import Path
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
+
 load_dotenv()
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 # 📁 Base Directory
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 # 🔐 Security Settings
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 
 try:
     SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
@@ -33,12 +34,12 @@ ALLOWED_HOSTS = [
     "igoultra-backend-v2-7307073ce46e.herokuapp.com"
 ]
 
-# ----------------------------------------------------------------
-# 🧩 Installed Apps
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🧩 Installed Applications
+# ------------------------------------------------------------
 
 INSTALLED_APPS = [
-    # Default Django
+    # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -47,11 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    # Extra
+    # Third-party apps
     'corsheaders',
     'django_extensions',
-
-    # Auth system
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
@@ -67,16 +66,16 @@ INSTALLED_APPS = [
     'seasons',
 ]
 
-# ----------------------------------------------------------------
-# 🔐 User & Site Config
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🔐 User & Site Configuration
+# ------------------------------------------------------------
 
 AUTH_USER_MODEL = 'users.CustomUser'
 SITE_ID = 1
 
-# ----------------------------------------------------------------
-# 🔐 REST Framework & Auth Config
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🔐 REST Framework & Auth Configuration
+# ------------------------------------------------------------
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -86,20 +85,18 @@ REST_FRAMEWORK = {
     ],
 }
 
-# JWT Settings for dj-rest-auth
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# Allauth settings
+# dj-allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_UNIQUE_EMAIL = True
 
-# Discord OAuth Settings
 SOCIALACCOUNT_PROVIDERS = {
     'discord': {
         'SCOPE': ['identify', 'email'],
@@ -108,9 +105,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 # 🔧 Middleware
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -125,9 +122,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 # 📦 Templates
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 
 ROOT_URLCONF = 'ultrabackend.urls'
 
@@ -148,9 +145,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ultrabackend.wsgi.application'
 
-# ----------------------------------------------------------------
-# 🗄️ Database
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🗄️ Database Configuration
+# ------------------------------------------------------------
 
 import dj_database_url
 
@@ -160,9 +157,9 @@ DATABASES = {
     )
 }
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 # 🔐 Password Validators
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -179,36 +176,42 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# ----------------------------------------------------------------
-# 🌍 Localization
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🌍 Internationalization
+# ------------------------------------------------------------
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 # 🎨 Static Files (Heroku + WhiteNoise)
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ----------------------------------------------------------------
-# 🧠 Defaults
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🧠 Default Primary Key Field
+# ------------------------------------------------------------
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ----------------------------------------------------------------
-# 🔓 CORS CONFIGURATION
-# ----------------------------------------------------------------
+# ------------------------------------------------------------
+# 🌐 CORS Configuration
+# ------------------------------------------------------------
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://igo-ultra-landing.vercel.app",  # optional für Deployment
+    "https://igo-ultra-landing.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# ------------------------------------------------------------
+# 📧 Email Backend (for development / disable real sending)
+# ------------------------------------------------------------
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
