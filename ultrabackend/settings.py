@@ -105,6 +105,13 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+# Redirect after login/logout
+LOGIN_REDIRECT_URL = "/dashboard"  # or external frontend like "https://igo-ultra-landing.vercel.app/dashboard"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+
+# Optional: use default social adapter (can be replaced with custom one)
+SOCIALACCOUNT_ADAPTER = "allauth.socialaccount.adapter.DefaultSocialAccountAdapter"
+
 # ------------------------------------------------------------
 # 🔧 Middleware
 # ------------------------------------------------------------
