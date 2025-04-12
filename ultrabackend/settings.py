@@ -5,10 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# ------------------------------------------------------------
-# 📁 Base Directory
-# ------------------------------------------------------------
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ------------------------------------------------------------
@@ -34,7 +30,6 @@ ALLOWED_HOSTS = [
 # ------------------------------------------------------------
 
 INSTALLED_APPS = [
-    # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,33 +38,32 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sites',
 
-    # Third-party apps
+    # Third-party
     'corsheaders',
     'django_extensions',
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',
-    'dj_rest_auth.registration',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.discord',
 
-    # Custom apps
+    # Custom
     'users',
     'xp',
     'seasons',
 ]
 
 # ------------------------------------------------------------
-# 🔐 User & Site Configuration
+# 🔐 User & Site Config
 # ------------------------------------------------------------
 
 AUTH_USER_MODEL = 'users.CustomUser'
 SITE_ID = 2
 
 # ------------------------------------------------------------
-# 🔐 REST Framework & Auth Configuration
+# 🔐 REST Framework & Auth
 # ------------------------------------------------------------
 
 REST_FRAMEWORK = {
@@ -79,23 +73,25 @@ REST_FRAMEWORK = {
     ],
 }
 
-# ❗ DISABLE JWT to support session-based social login
+# ❌ JWT Deaktiviert – Nur Session Auth via Discord
 REST_USE_JWT = False
 
-# (You can keep JWT settings for future use)
+# Optional JWT config (für später)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
-# dj-allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_UNIQUE_EMAIL = True
 
-# OAuth Provider: Discord
+# ------------------------------------------------------------
+# 🔑 Discord OAuth2
+# ------------------------------------------------------------
+
 SOCIALACCOUNT_PROVIDERS = {
     'discord': {
         'SCOPE': ['identify', 'email'],
@@ -104,7 +100,6 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# Redirects (important for social login flow)
 LOGIN_REDIRECT_URL = "http://localhost:5173/discord/callback"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
@@ -152,7 +147,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ultrabackend.wsgi.application'
 
 # ------------------------------------------------------------
-# 🗄️ Database Configuration
+# 🗄️ Database
 # ------------------------------------------------------------
 
 import dj_database_url
@@ -164,26 +159,18 @@ DATABASES = {
 }
 
 # ------------------------------------------------------------
-# 🔐 Password Validators
+# ✅ Password Validators
 # ------------------------------------------------------------
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 # ------------------------------------------------------------
-# 🌍 Internationalization
+# 🌍 I18N
 # ------------------------------------------------------------
 
 LANGUAGE_CODE = 'en-us'
@@ -199,14 +186,10 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ------------------------------------------------------------
-# 🧠 Default Primary Key Field
-# ------------------------------------------------------------
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ------------------------------------------------------------
-# 🌐 CORS Configuration
+# 🌐 CORS Config
 # ------------------------------------------------------------
 
 CORS_ALLOWED_ORIGINS = [
@@ -217,7 +200,7 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOW_CREDENTIALS = True
 
 # ------------------------------------------------------------
-# 🍪 Cookies & Security for HTTPS + Social Login
+# 🍪 Secure Cookies (Cross-Origin Login)
 # ------------------------------------------------------------
 
 SESSION_COOKIE_SECURE = True
@@ -227,7 +210,7 @@ CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
 
 # ------------------------------------------------------------
-# 📧 Email Backend (for development / disable real sending)
+# 📧 Email Console Backend (Dev only)
 # ------------------------------------------------------------
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
