@@ -16,4 +16,7 @@ urlpatterns = [
 
     # 🔁 Allauth für Social OAuth-Redirects (z. B. Discord-Login: /accounts/discord/login/)
     path('accounts/', include('allauth.urls')),
+    
+    # 🔥 Users API (z. B. /api/users/me/)
+    path("api/users/", include("users.urls")),
 ]
