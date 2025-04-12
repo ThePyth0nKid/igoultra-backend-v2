@@ -76,17 +76,19 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
-REST_USE_JWT = True
+# ❗ DISABLE JWT to support session-based social login
+REST_USE_JWT = False
 
+# (You can keep JWT settings for future use)
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
+# dj-allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
@@ -106,7 +108,6 @@ SOCIALACCOUNT_PROVIDERS = {
 LOGIN_REDIRECT_URL = "http://localhost:5173/discord/callback"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
-# Optional: Adapters (can be customized later)
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
 SOCIALACCOUNT_ADAPTER = "allauth.socialaccount.adapter.DefaultSocialAccountAdapter"
 
@@ -214,6 +215,16 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CORS_ALLOW_CREDENTIALS = True
+
+# ------------------------------------------------------------
+# 🍪 Cookies & Security for HTTPS + Social Login
+# ------------------------------------------------------------
+
+SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SAMESITE = "None"
+
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = "None"
 
 # ------------------------------------------------------------
 # 📧 Email Backend (for development / disable real sending)
