@@ -2,10 +2,14 @@ from pathlib import Path
 from datetime import timedelta
 import os
 from dotenv import load_dotenv
+import dj_database_url
 
-load_dotenv()
+# ------------------------------------------------------------
+# 📁 Base Directory + .env Laden
+# ------------------------------------------------------------
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+load_dotenv()
 
 # ------------------------------------------------------------
 # 🔐 Security Settings
@@ -21,7 +25,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "api.igoultra.de",  # ✅ your production backend subdomain
+    "api.igoultra.de",  # ✅ production backend subdomain
     ".herokuapp.com",
 ]
 
@@ -99,8 +103,9 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = "https://app.igoultra.de/discord/callback"  # ✅ your frontend
-ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+# ✅ Redirect-URLs über Umgebungsvariablen steuerbar
+LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL", "/accounts/profile/")
+ACCOUNT_LOGOUT_REDIRECT_URL = os.getenv("ACCOUNT_LOGOUT_REDIRECT_URL", "/")
 
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
 SOCIALACCOUNT_ADAPTER = "allauth.socialaccount.adapter.DefaultSocialAccountAdapter"
@@ -149,8 +154,6 @@ WSGI_APPLICATION = 'ultrabackend.wsgi.application'
 # 💾 Database
 # ------------------------------------------------------------
 
-import dj_database_url
-
 DATABASES = {
     'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}'
@@ -193,7 +196,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
-    "https://app.igoultra.de",  # ✅ frontend domain for Vercel
+    "http://localhost:3000",           # ✅ Local React app
+    "https://app.igoultra.de",         # ✅ Vercel frontend
 ]
 
 CORS_ALLOW_CREDENTIALS = True
