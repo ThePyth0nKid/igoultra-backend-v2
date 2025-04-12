@@ -12,7 +12,7 @@ urlpatterns = [
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')),
 
     # 🌐 Social Login API (z. B. für Discord, Google, etc.)
-    path('api/auth/social/', include('allauth.socialaccount.urls')),
+    path("api/auth/social/", include("users.urls")),
 
     # 🔁 Allauth für Social OAuth-Redirects (z. B. Discord-Login: /accounts/discord/login/)
     path('accounts/', include('allauth.urls')),
