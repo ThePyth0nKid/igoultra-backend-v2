@@ -25,7 +25,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "api.igoultra.de",  # ✅ production backend subdomain
+    "api.igoultra.de",  # ✅ Production Backend Subdomain
     ".herokuapp.com",
 ]
 
@@ -85,6 +85,10 @@ SIMPLE_JWT = {
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
 
+# ------------------------------------------------------------
+# 🔐 Allauth Account Settings
+# ------------------------------------------------------------
+
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
@@ -103,8 +107,8 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# ✅ Redirect-URLs über Umgebungsvariablen steuerbar
-LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL", "/accounts/profile/")
+# ✅ Frontend Redirect-URL über Umgebungsvariable steuerbar
+LOGIN_REDIRECT_URL = os.getenv("LOGIN_REDIRECT_URL", "/api/v1/auth/user/")
 ACCOUNT_LOGOUT_REDIRECT_URL = os.getenv("ACCOUNT_LOGOUT_REDIRECT_URL", "/")
 
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
@@ -195,19 +199,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # ------------------------------------------------------------
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",           # ✅ Local React app
-    "https://app.igoultra.de",         # ✅ Vercel frontend
+    "http://localhost:5173",           # Local Vite (React)
+    "http://localhost:3000",           # Optional fallback
+    "https://app.igoultra.de",         # ✅ Vercel Frontend
 ]
 
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = True  # Wichtig für Session Cookies
 
 # ------------------------------------------------------------
-# 🍪 Secure Cookie Settings (for Cross-Origin Cookies)
+# 🍪 Secure Cookie Settings (Cross-Origin Cookies)
 # ------------------------------------------------------------
 
 SESSION_COOKIE_SECURE = True
-SESSION_COOKIE_SAMESITE = "None"  # Required for cross-site cookies
+SESSION_COOKIE_SAMESITE = "None"
 
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_SAMESITE = "None"
